@@ -1,0 +1,6 @@
+Flask==3.0.3
+Flask-SocketIO==5.3.6
+Flask-SQLAlchemy==3.1.1
+bcrypt==4.2.0
+PyQt5==5.15.11
+cryptography==43.0.0
