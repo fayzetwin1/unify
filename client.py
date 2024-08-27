@@ -39,20 +39,20 @@ class AuthWindow(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle('Authorization')
+        self.setWindowTitle('Unify Desktop')
         self.setGeometry(100, 100, 300, 200)
 
         # Main layout
         main_layout = QVBoxLayout()
 
         # Username
-        self.username_label = QLabel('Username:', self)
+        self.username_label = QLabel('Никнейм:', self)
         self.username_input = QLineEdit(self)
         main_layout.addWidget(self.username_label)
         main_layout.addWidget(self.username_input)
 
         # Password
-        self.password_label = QLabel('Password:', self)
+        self.password_label = QLabel('Пароль:', self)
         self.password_input = QLineEdit(self)
         self.password_input.setEchoMode(QLineEdit.Password)
         main_layout.addWidget(self.password_label)
@@ -60,9 +60,9 @@ class AuthWindow(QMainWindow):
 
         # Buttons
         button_layout = QHBoxLayout()
-        self.login_button = QPushButton('Login', self)
+        self.login_button = QPushButton('Авторизоваться', self)
         self.login_button.clicked.connect(self.login)
-        self.register_button = QPushButton('Register', self)
+        self.register_button = QPushButton('Зарегистрироваться', self)
         self.register_button.clicked.connect(self.register)
         button_layout.addWidget(self.login_button)
         button_layout.addWidget(self.register_button)
@@ -87,9 +87,9 @@ class AuthWindow(QMainWindow):
                 app.messenger_window = messenger_window
                 sio.connect('http://localhost:5000', transports=['websocket'], headers={'Cookie': response.headers.get('Set-Cookie')})
             else:
-                QMessageBox.warning(self, 'Login Failed', response.json().get('message'))
+                QMessageBox.warning(self, 'Авторизация не была пройдена успешно.', response.json().get('message'))
         except Exception as e:
-            QMessageBox.warning(self, 'Login Failed', str(e))
+            QMessageBox.warning(self, 'Авторизация не была пройдена успешно.', str(e))
 
     def register(self):
         username = self.username_input.text()
@@ -97,11 +97,11 @@ class AuthWindow(QMainWindow):
         try:
             response = requests.post('http://localhost:5000/register', json={'username': username, 'password': password})
             if response.status_code == 201:
-                QMessageBox.information(self, 'Registration Successful', 'User registered successfully')
+                QMessageBox.information(self, 'Ответ от сервера', 'Вы успешно зарегистрировались.')
             else:
-                QMessageBox.warning(self, 'Registration Failed', response.json().get('message'))
+                QMessageBox.warning(self, 'Регистрация не была пройдена успешно.', response.json().get('message'))
         except Exception as e:
-            QMessageBox.warning(self, 'Registration Failed', str(e))
+            QMessageBox.warning(self, 'Регистрация не была пройдена успешно.', str(e))
 
     def save_session(self, username, password):
         if not os.path.exists('unifyData'):
@@ -132,7 +132,7 @@ class MessengerWindow(QMainWindow):
         self.set_dark_theme()
 
     def initUI(self):
-        self.setWindowTitle('Messenger')
+        self.setWindowTitle('Unify Desktop')
         self.setGeometry(100, 100, 600, 400)
 
         # Main layout
@@ -154,12 +154,12 @@ class MessengerWindow(QMainWindow):
         # Input area
         input_layout = QHBoxLayout()
         self.input_field = QLineEdit(self)
-        self.input_field.setPlaceholderText('Type your message here...')
+        self.input_field.setPlaceholderText('мяв.. ну или напишите тут что-то')
         self.input_field.setStyleSheet("font-size: 16px; color: white; background-color: #333;")
         self.input_field.installEventFilter(self)
         input_layout.addWidget(self.input_field)
 
-        self.send_button = QPushButton('Send', self)
+        self.send_button = QPushButton('Отправить', self)
         self.send_button.setStyleSheet("font-size: 16px; color: white; background-color: #555;")
         self.send_button.clicked.connect(self.send_message)
         input_layout.addWidget(self.send_button)
